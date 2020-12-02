@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace Forma1WebApp.Controllers
 {
-    public class HomeController : Controller
+    public class TeamController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<TeamController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public TeamController(ILogger<TeamController> logger)
         {
             _logger = logger;
         }
@@ -23,10 +23,8 @@ namespace Forma1WebApp.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
