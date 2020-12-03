@@ -1,50 +1,33 @@
-﻿using Forma1WebApp.Data;
-using Forma1WebApp.Models;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Forma1WebApp.Controllers
 {
-    public class AppController : Controller
+    public class HomeController : Controller
     {
-        private readonly ITeamRepository repository;
-
-        public AppController(ITeamRepository repository)
+        // GET: HomeController
+        public ActionResult Index()
         {
-            this.repository = repository;
+            return View();
         }
 
-        public IActionResult Index()
-        {
-            var result = repository.GetAllTeam();
-            return View(result);
-        }
-
-
-        public IActionResult EditableList()
-        {
-            var result = repository.GetAllTeam();
-            return View(result);
-        }
-
-
+        // GET: HomeController/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-
+        // GET: HomeController/Create
         public ActionResult Create()
         {
             return View();
         }
 
+        // POST: HomeController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
@@ -59,11 +42,13 @@ namespace Forma1WebApp.Controllers
             }
         }
 
+        // GET: HomeController/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
+        // POST: HomeController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -78,11 +63,13 @@ namespace Forma1WebApp.Controllers
             }
         }
 
+        // GET: HomeController/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
+        // POST: HomeController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
@@ -95,12 +82,6 @@ namespace Forma1WebApp.Controllers
             {
                 return View();
             }
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
