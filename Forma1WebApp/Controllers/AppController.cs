@@ -12,18 +12,17 @@ namespace Forma1WebApp.Controllers
 {
     public class AppController : Controller
     {
-        private readonly Forma1Context _context;
+        private readonly ITeamRepository repository;
 
-        public AppController(Forma1Context context)
+        public AppController(ITeamRepository repository)
         {
-            _context = context;
+            this.repository = repository;
         }
 
         public IActionResult Index()
         {
-            _context.Database.EnsureCreated();
-            return View(_context.Teams.ToList());
-           
+            var result = repository.GetAllTeam();
+            return View(result);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

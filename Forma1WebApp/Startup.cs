@@ -28,6 +28,9 @@ namespace Forma1WebApp
                 //TODO: Kiszervezni json fájlba
                 options.UseSqlite(connection);
             });
+            //Új mo
+            services.AddScoped<ITeamRepository, TeamRepository>();
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
