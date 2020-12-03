@@ -1,3 +1,4 @@
+using Forma1WebApp.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -8,25 +9,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.Sqlite;
 
 namespace Forma1WebApp
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
 
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var connection = new SqliteConnection("datasource=:memory:");
+            connection.Open();
+
             services.AddControllersWithViews();
+            services.AddDbContext<Forma1Context>(options => 
+            {
+                //TODO: Kiszervezni json fájlba
+                options.UseSqlite(connection);
+            });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -49,7 +52,7 @@ namespace Forma1WebApp
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute("Fallback",
-                    pattern: "{controller=Team}/{action=Index}/{id?}");
+                    pattern: "{controller=App}/{action=Index}/{id?}");
             });
         }
     }

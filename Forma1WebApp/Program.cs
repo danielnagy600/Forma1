@@ -22,5 +22,6 @@ namespace Forma1WebApp
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+            
     }
 }
