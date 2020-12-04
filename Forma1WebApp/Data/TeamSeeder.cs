@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,15 +9,30 @@ namespace Forma1WebApp.Data.Entities
     public class TeamSeeder
     {
         private readonly Forma1Context ctx;
+        private readonly UserManager<StoreUser> userManager;
 
-        public TeamSeeder(Forma1Context ctx)
+        public TeamSeeder(Forma1Context ctx, UserManager<StoreUser> userManager)
         {
             this.ctx = ctx;
+            this.userManager = userManager;
         }
 
-        public void Seed()
+        public async Task SeedAsynv()
         {
             ctx.Database.EnsureCreated();
+            
+            StoreUser user = new StoreUser() { UserName = "admin" };
+              
+            var result = await userManager.CreateAsync(user, "f1test2018");
+            
+
+            if (result !=IdentityResult.Success)
+            {
+                throw new InvalidOperationException("Az alapértelmezett felhasználó létrehozása nem sikerült!");
+            }
+
+            //Todo:Javítás, mert nem tároljuk le a kívánt jelszót a táblában
+            //ctx.StoreUsers.Add(user);
 
             if (!ctx.Teams.Any())
             {
@@ -34,9 +50,7 @@ namespace Forma1WebApp.Data.Entities
                 ctx.Teams.AddRange(teams);
                 ctx.SaveChanges();
             }
-
-
-            }
         }
     }
+}
 

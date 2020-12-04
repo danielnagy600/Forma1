@@ -8,6 +8,6 @@ namespace Forma1WebApp.Data.Entities
 {
     public class StoreUser : IdentityUser
     {
-        public new string UserName { get; set; }
+        public string UsernName { get; set; }
     }
 }

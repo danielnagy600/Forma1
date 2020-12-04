@@ -13,7 +13,6 @@ namespace Forma1WebApp.ViewModel
         public int Username { get; set; }
         [Required]
         public int Password { get; set; }
-        [Required]
-        public int MyProperty { get; set; }
+        public bool RememberMe { get; set; }
     }
 }

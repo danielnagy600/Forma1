@@ -28,7 +28,7 @@ namespace Forma1WebApp
             using (var scope = scopeFactory.CreateScope())
             {
                 var seeder = scope.ServiceProvider.GetService<TeamSeeder>();
-                seeder.Seed();
+                seeder.SeedAsynv().Wait();
             }
                 
         }

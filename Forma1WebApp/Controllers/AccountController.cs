@@ -11,8 +11,13 @@ namespace Forma1WebApp.Controllers
         
         public IActionResult Login()
         {
-            //Ha be van authentikálva átirányítjuk az index oldalra
+            if (this.User.Identity.IsAuthenticated) 
+            {
+                return RedirectToAction("EditableList","App");
+            }
             return View();
         }
+
+      
     }
 }

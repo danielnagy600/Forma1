@@ -24,6 +24,16 @@ namespace Forma1WebApp
             var connection = new SqliteConnection("datasource=:memory:");
             connection.Open();
 
+            services.AddIdentity<StoreUser, IdentityRole>(cfg => 
+            {
+                cfg.Password.RequireNonAlphanumeric = false;
+                cfg.Password.RequireUppercase = false;
+                cfg.User.RequireUniqueEmail = false;
+                cfg.Password.RequiredUniqueChars = 0;
+                
+            })
+              .AddEntityFrameworkStores<Forma1Context>();
+
             services.AddTransient<TeamSeeder>();
 
             services.AddControllersWithViews();
@@ -54,6 +64,7 @@ namespace Forma1WebApp
              
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
