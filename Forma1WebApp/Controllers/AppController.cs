@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Forma1WebApp.Data.Entities;
 
 namespace Forma1WebApp.Controllers
 {
@@ -26,19 +28,11 @@ namespace Forma1WebApp.Controllers
             return View(result);
         }
 
-
         public IActionResult EditableList()
         {
             var result = repository.GetAllTeam();
             return View(result);
         }
-
-
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
 
         public ActionResult Create()
         {
@@ -47,11 +41,18 @@ namespace Forma1WebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Team newTeam)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                if (!ModelState.IsValid)
+                {
+                    return View();
+                }
+                newTeam.Id = repository.GetMaxId()+1;
+                repository.AddTeam(newTeam);
+                repository.SaveAll();
+                return RedirectToAction(nameof(EditableList));
             }
             catch
             {
@@ -80,16 +81,19 @@ namespace Forma1WebApp.Controllers
 
         public ActionResult Delete(int id)
         {
-            return View();
+            var toBeDeleted = repository.GetElementById(id);
+            return View(toBeDeleted);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(Team team)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                repository.DeleteTeam(team);
+                repository.SaveAll();
+                return RedirectToAction(nameof(EditableList));
             }
             catch
             {

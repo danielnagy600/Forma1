@@ -4,10 +4,9 @@
     ViewData["Title"] = "EditableList";
 }
 
-<h1>EditableList</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Új elem hozzáadása</a>
 </p>
 <table class="table">
     <thead>
@@ -49,9 +48,8 @@
                 @Html.DisplayFor(modelItem => item.IsPaid)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Szerkesztés", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Törlés", "Delete", new {  id=item.Id })
             </td>
         </tr>
 }
