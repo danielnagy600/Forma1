@@ -48,7 +48,7 @@
                 @Html.DisplayFor(modelItem => item.IsPaid)
             </td>
             <td>
-                @Html.ActionLink("Szerkesztés", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Szerkesztés", "Edit", new { id=item.Id }) |
                 @Html.ActionLink("Törlés", "Delete", new {  id=item.Id })
             </td>
         </tr>

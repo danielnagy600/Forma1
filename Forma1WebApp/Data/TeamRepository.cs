@@ -46,6 +46,13 @@ namespace Forma1WebApp.Data
             return _ctx.Teams.ToList();
         }
 
+        public void Update(Team team)
+        {
+            _ctx.Database.EnsureCreated();
+            _ctx.Teams.Update(team);
+        }
+
+
         public bool SaveAll()
         {
             return _ctx.SaveChanges()>0;

@@ -9,6 +9,7 @@ namespace Forma1WebApp.Data
         void AddTeam(Team team);
         bool SaveAll();
         int GetMaxId();
+        void Update(Team team);
         Team GetElementById(int Id);
         void DeleteTeam(Team team);
     }

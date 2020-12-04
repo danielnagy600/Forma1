@@ -62,16 +62,20 @@ namespace Forma1WebApp.Controllers
 
         public ActionResult Edit(int id)
         {
-            return View();
+            var selectedTeam = repository.GetElementById(id);
+            return View(selectedTeam);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(Team selectedTeam)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                //repository.DeleteTeam(team);
+                repository.Update(selectedTeam);
+                repository.SaveAll();
+                return RedirectToAction(nameof(EditableList));
             }
             catch
             {
