@@ -11,6 +11,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.Sqlite;
+using Forma1WebApp.Data.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace Forma1WebApp
 {
@@ -22,13 +24,15 @@ namespace Forma1WebApp
             var connection = new SqliteConnection("datasource=:memory:");
             connection.Open();
 
+            services.AddTransient<TeamSeeder>();
+
             services.AddControllersWithViews();
             services.AddDbContext<Forma1Context>(options => 
             {
                 //TODO: Kiszervezni json fájlba
                 options.UseSqlite(connection);
             });
-            //Új mo
+            
             services.AddScoped<ITeamRepository, TeamRepository>();
 
         }
