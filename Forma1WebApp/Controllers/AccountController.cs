@@ -18,7 +18,6 @@ namespace Forma1WebApp.Controllers
             this.signInManager = signInManager;
         }
         
-        
         public IActionResult Login()
         {
             if (this.User.Identity.IsAuthenticated) 
@@ -33,23 +32,17 @@ namespace Forma1WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 var result = await signInManager.PasswordSignInAsync(model.Username,
-                                                                model.Password,
-                                                                false,false);
+                                                                     model.Password,
+                                                                     false,
+                                                                     false);
                 if (result.Succeeded)
                 {
-                    if (Request.Query.Keys.Contains("ReturnUrl"))
-                    {
-                        Redirect(Request.Query["ReturnUrl"].First());
-                    }
-                    else
-                    {
-                        RedirectToAction("EditableList", "App");
-                    }
+                    return RedirectToAction("EditableList", "App");
                 }
             }
-
-            ModelState.AddModelError("","Sikertelen bejelentkezés");
+            ModelState.AddModelError("", "Sikertelen bejelentkezés");
             return View();
         }
 
