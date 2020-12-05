@@ -1,4 +1,4 @@
-# Forma1 Web Alkalmazás
+# Forma-1 Web Alkalmazás
 
 ## Követeknény specifikáció
 
