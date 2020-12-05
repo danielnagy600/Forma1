@@ -73,7 +73,6 @@ namespace Forma1WebApp.Controllers
         {
             try
             {
-                //repository.DeleteTeam(team);
                 repository.Update(selectedTeam);
                 repository.SaveAll();
                 return RedirectToAction(nameof(EditableList));
