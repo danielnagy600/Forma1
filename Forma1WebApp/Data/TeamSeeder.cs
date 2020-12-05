@@ -31,7 +31,7 @@ namespace Forma1WebApp.Data.Entities
                 throw new InvalidOperationException("Az alapértelmezett felhasználó létrehozása nem sikerült!");
             }
 
-            //Todo:Javítás, mert nem tároljuk le a kívánt jelszót a táblában
+            //Todo:Javítás, mert nem tároljuk le a kívánt jelszót a táblában,de működik
             //ctx.StoreUsers.Add(user);
 
             if (!ctx.Teams.Any())

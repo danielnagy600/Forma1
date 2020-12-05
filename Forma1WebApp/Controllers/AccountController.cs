@@ -34,8 +34,7 @@ namespace Forma1WebApp.Controllers
             {
                 var result = await signInManager.PasswordSignInAsync(model.Username,
                                                                 model.Password,
-                                                                model.RememberMe,
-                                                                false);
+                                                                false,false);
                 if (result.Succeeded)
                 {
                     if (Request.Query.Keys.Contains("ReturnUrl"))

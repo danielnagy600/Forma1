@@ -28,6 +28,7 @@ namespace Forma1WebApp.Controllers
             return View(result);
         }
 
+        [Authorize]
         public IActionResult EditableList()
         {
             var result = repository.GetAllTeam();
