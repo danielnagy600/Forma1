@@ -9,9 +9,9 @@ namespace Forma1WebApp.ViewModel
 {
     public class LoginViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "A felhasználónév kitöltése kötelező!")]
         public string Username { get; set; }
-        [Required]
+        [Required(ErrorMessage = "A jelszó kitöltése kötelező!")]
         public string Password { get; set; }
     }
 }

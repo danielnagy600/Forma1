@@ -16,9 +16,7 @@ namespace Forma1WebApp
         public static void Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
-
             RunSeeding(host);
-
             host.Run();
         }
 

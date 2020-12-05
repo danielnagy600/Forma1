@@ -39,12 +39,10 @@ namespace Forma1WebApp
             services.AddControllersWithViews();
             services.AddDbContext<Forma1Context>(options => 
             {
-                //TODO: Kiszervezni json fájlba
                 options.UseSqlite(connection);
             });
             
             services.AddScoped<ITeamRepository, TeamRepository>();
-
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -56,7 +54,6 @@ namespace Forma1WebApp
             else
             {
                 app.UseExceptionHandler("/App/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
             app.UseHttpsRedirection();

@@ -15,6 +15,18 @@ namespace Forma1WebApp.Data
             _ctx = ctx;
         }
 
+        public IEnumerable<Team> GetAllTeam()
+        {
+            _ctx.Database.EnsureCreated();
+            return _ctx.Teams.ToList();
+        }
+
+        public Team GetElementById(int Id)
+        {
+            _ctx.Database.EnsureCreated();
+            return _ctx.Teams.FirstOrDefault(x => x.Id == Id);
+        }
+
         public void AddTeam(Team team)
         {
             _ctx.Database.EnsureCreated();
@@ -24,14 +36,8 @@ namespace Forma1WebApp.Data
         public int GetMaxId()
         {
             _ctx.Database.EnsureCreated();
-            //TODO: Ha üres a lista elhasal
-            return _ctx.Teams.Max(x => x.Id);
-        }
-
-        public Team GetElementById(int Id)
-        {
-            _ctx.Database.EnsureCreated();
-            return _ctx.Teams.FirstOrDefault(x => x.Id == Id);
+            if (_ctx.Teams.Any()) return _ctx.Teams.Max(x => x.Id);
+            else return 0;
         }
 
         public void DeleteTeam(Team team)
@@ -40,18 +46,12 @@ namespace Forma1WebApp.Data
             _ctx.Teams.Remove(team);
         }
 
-        public IEnumerable<Team> GetAllTeam()
-        {
-            _ctx.Database.EnsureCreated();
-            return _ctx.Teams.ToList();
-        }
 
         public void Update(Team team)
         {
             _ctx.Database.EnsureCreated();
             _ctx.Teams.Update(team);
         }
-
 
         public bool SaveAll()
         {

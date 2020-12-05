@@ -22,17 +22,12 @@ namespace Forma1WebApp.Data.Entities
             ctx.Database.EnsureCreated();
             
             StoreUser user = new StoreUser() { UserName = "admin" };
-              
             var result = await userManager.CreateAsync(user, "f1test2018");
             
-
             if (result !=IdentityResult.Success)
             {
                 throw new InvalidOperationException("Az alapértelmezett felhasználó létrehozása nem sikerült!");
             }
-
-            //Todo:Javítás, mert nem tároljuk le a kívánt jelszót a táblában,de működik
-            //ctx.StoreUsers.Add(user);
 
             if (!ctx.Teams.Any())
             {

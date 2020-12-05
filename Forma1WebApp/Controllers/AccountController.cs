@@ -17,7 +17,8 @@ namespace Forma1WebApp.Controllers
         {
             this.signInManager = signInManager;
         }
-
+        
+        
         public IActionResult Login()
         {
             if (this.User.Identity.IsAuthenticated) 
@@ -52,12 +53,11 @@ namespace Forma1WebApp.Controllers
             return View();
         }
 
-        [HttpGet]
+     
         public async Task<ActionResult> Logout()
         {
             await signInManager.SignOutAsync();
             return RedirectToAction("Index","App");
         }
-      
     }
 }
