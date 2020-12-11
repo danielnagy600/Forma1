@@ -41,6 +41,7 @@ namespace Forma1WebApp.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Team newTeam)
         {
@@ -60,6 +61,7 @@ namespace Forma1WebApp.Controllers
                 return View();
             }
         }
+
 
         public ActionResult Edit(int id)
         {

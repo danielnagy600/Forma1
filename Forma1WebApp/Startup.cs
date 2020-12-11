@@ -37,11 +37,11 @@ namespace Forma1WebApp
             services.AddTransient<TeamSeeder>();
 
             services.AddControllersWithViews();
-            services.AddDbContext<Forma1Context>(options => 
+            services.AddDbContext<Forma1Context>(options =>
             {
                 options.UseSqlite(connection);
             });
-            
+
             services.AddScoped<ITeamRepository, TeamRepository>();
         }
 
