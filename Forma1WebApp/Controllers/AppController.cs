@@ -35,6 +35,7 @@ namespace Forma1WebApp.Controllers
             return View(result);
         }
 
+        [Authorize]
         public ActionResult Create()
         {
             return View();
@@ -62,7 +63,7 @@ namespace Forma1WebApp.Controllers
             }
         }
 
-
+        [Authorize]
         public ActionResult Edit(int id)
         {
             var selectedTeam = repository.GetElementById(id);
@@ -70,6 +71,7 @@ namespace Forma1WebApp.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Team selectedTeam)
         {
@@ -85,6 +87,7 @@ namespace Forma1WebApp.Controllers
             }
         }
 
+        [Authorize]
         public ActionResult Delete(int id)
         {
             var toBeDeleted = repository.GetElementById(id);
@@ -92,6 +95,7 @@ namespace Forma1WebApp.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(Team team)
         {
