@@ -10,27 +10,27 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="YearOfFoundation" class="control-label"></label>
+            <div class="mb-3">
+                <label asp-for="YearOfFoundation" class="form-label"></label>
                 <input asp-for="YearOfFoundation" class="form-control" />
                 <span asp-validation-for="YearOfFoundation" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="WonOfChampionship" class="control-label"></label>
+            <div class="mb-3">
+                <label asp-for="WonOfChampionship" class="form-label"></label>
                 <input asp-for="WonOfChampionship" class="form-control" />
                 <span asp-validation-for="WonOfChampionship" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
+            <div class="mb-3 form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="IsPaid" /> @Html.DisplayNameFor(model => model.IsPaid)
                 </label>
             </div>
-            <div class="form-group">
+            <div class="mb-3">
                 <input type="submit" value="Létrehozás" class="btn btn-secondary" />
             </div>
         </form>

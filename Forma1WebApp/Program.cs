@@ -1,42 +1,54 @@
+using Forma1WebApp.Data;
 using Forma1WebApp.Data.Entities;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 
-namespace Forma1WebApp
-{
-    public class Program
+var builder = WebApplication.CreateBuilder(args);
+
+// Az SQLite in-memory adatbázis addig él, amíg ez a kapcsolat nyitva van.
+var connection = new SqliteConnection("DataSource=:memory:");
+connection.Open();
+
+builder.Services.AddDbContext<Forma1Context>(options => options.UseSqlite(connection));
+
+builder.Services.AddIdentity<StoreUser, IdentityRole>(cfg =>
     {
-        public static void Main(string[] args)
-        {
-            var host = CreateHostBuilder(args).Build();
-            RunSeeding(host);
-            host.Run();
-        }
+        cfg.Password.RequireNonAlphanumeric = false;
+        cfg.Password.RequireUppercase = false;
+        cfg.Password.RequiredUniqueChars = 0;
+        cfg.User.RequireUniqueEmail = false;
+    })
+    .AddEntityFrameworkStores<Forma1Context>();
 
-        private static void RunSeeding(IHost host)
-        {
-            var scopeFactory = host.Services.GetService<IServiceScopeFactory>();
-            using (var scope = scopeFactory.CreateScope())
-            {
-                var seeder = scope.ServiceProvider.GetService<TeamSeeder>();
-                seeder.SeedAsynv().Wait();
-            }
-                
-        }
+builder.Services.AddTransient<TeamSeeder>();
+builder.Services.AddScoped<ITeamRepository, TeamRepository>();
+builder.Services.AddControllersWithViews();
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-            
-    }
+var app = builder.Build();
+
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/App/Error");
+    app.UseHsts();
 }
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "Fallback",
+    pattern: "{controller=App}/{action=Index}/{id?}");
+
+using (var scope = app.Services.CreateScope())
+{
+    var seeder = scope.ServiceProvider.GetRequiredService<TeamSeeder>();
+    await seeder.SeedAsynv();
+}
+
+app.Run();
