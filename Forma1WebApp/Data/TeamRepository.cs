@@ -26,12 +26,6 @@ public class TeamRepository : ITeamRepository
         _ctx.Teams.Add(team);
     }
 
-    public int GetMaxId()
-    {
-        if (_ctx.Teams.Any()) return _ctx.Teams.Max(x => x.Id);
-        else return 0;
-    }
-
     public void DeleteTeam(Team team)
     {
         _ctx.Teams.Remove(team);

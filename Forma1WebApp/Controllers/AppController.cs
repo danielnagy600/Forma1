@@ -1,14 +1,17 @@
 ﻿using System.Diagnostics;
 using Forma1WebApp.Data;
 using Forma1WebApp.Data.Entities;
-using Forma1WebApp.Models;
+using Forma1WebApp.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Forma1WebApp.Controllers;
 
 public class AppController : Controller
 {
+    private const string SaveErrorMessage = "A mentés nem sikerült, próbálja újra!";
+
     private readonly ITeamRepository repository;
 
     public AppController(ITeamRepository repository)
@@ -18,96 +21,140 @@ public class AppController : Controller
 
     public IActionResult Index()
     {
-        var result = repository.GetAllTeam();
-        return View(result);
+        return View(GetTeamList());
     }
 
     [Authorize]
     public IActionResult EditableList()
     {
-        var result = repository.GetAllTeam();
-        return View(result);
+        return View(GetTeamList());
     }
 
     [Authorize]
-    public ActionResult Create()
+    public IActionResult Create()
     {
-        return View();
+        return View(new TeamViewModel());
     }
 
     [HttpPost]
     [Authorize]
     [ValidateAntiForgeryToken]
-    public ActionResult Create(Team newTeam)
+    public IActionResult Create(TeamViewModel model)
     {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var team = new Team();
+        model.ApplyTo(team);
+
         try
         {
-            if (!ModelState.IsValid)
-            {
-                return View();
-            }
-            newTeam.Id = repository.GetMaxId() + 1;
-            repository.AddTeam(newTeam);
+            repository.AddTeam(team);
             repository.SaveAll();
-            return RedirectToAction(nameof(EditableList));
         }
-        catch
+        catch (DbUpdateException)
         {
-            return View();
+            ModelState.AddModelError("", SaveErrorMessage);
+            return View(model);
         }
+
+        return RedirectToAction(nameof(EditableList));
     }
 
     [Authorize]
-    public ActionResult Edit(int id)
+    public IActionResult Edit(int id)
     {
-        var selectedTeam = repository.GetElementById(id);
-        return View(selectedTeam);
+        var team = repository.GetElementById(id);
+        if (team == null)
+        {
+            return NotFound();
+        }
+
+        return View(TeamViewModel.FromEntity(team));
     }
 
     [HttpPost]
     [Authorize]
     [ValidateAntiForgeryToken]
-    public ActionResult Edit(Team selectedTeam)
+    public IActionResult Edit([FromRoute] int id, TeamViewModel model)
     {
+        model.Id = id;
+
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var team = repository.GetElementById(id);
+        if (team == null)
+        {
+            return NotFound();
+        }
+
+        model.ApplyTo(team);
+
         try
         {
-            repository.Update(selectedTeam);
+            repository.Update(team);
             repository.SaveAll();
-            return RedirectToAction(nameof(EditableList));
         }
-        catch
+        catch (DbUpdateException)
         {
-            return View();
+            ModelState.AddModelError("", SaveErrorMessage);
+            return View(model);
         }
+
+        return RedirectToAction(nameof(EditableList));
     }
 
     [Authorize]
-    public ActionResult Delete(int id)
+    public IActionResult Delete(int id)
     {
-        var toBeDeleted = repository.GetElementById(id);
-        return View(toBeDeleted);
+        var team = repository.GetElementById(id);
+        if (team == null)
+        {
+            return NotFound();
+        }
+
+        return View(TeamViewModel.FromEntity(team));
     }
 
     [HttpPost]
+    [ActionName(nameof(Delete))]
     [Authorize]
     [ValidateAntiForgeryToken]
-    public ActionResult Delete(Team team)
+    public IActionResult DeleteConfirmed([FromRoute] int id)
     {
+        var team = repository.GetElementById(id);
+        if (team == null)
+        {
+            return NotFound();
+        }
+
         try
         {
             repository.DeleteTeam(team);
             repository.SaveAll();
-            return RedirectToAction(nameof(EditableList));
         }
-        catch
+        catch (DbUpdateException)
         {
-            return View();
+            ModelState.AddModelError("", "A törlés nem sikerült, próbálja újra!");
+            return View(TeamViewModel.FromEntity(team));
         }
+
+        return RedirectToAction(nameof(EditableList));
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
+
+    private List<TeamViewModel> GetTeamList()
+    {
+        return repository.GetAllTeam().Select(TeamViewModel.FromEntity).ToList();
     }
 }

@@ -1,4 +1,4 @@
-namespace Forma1WebApp.Models;
+namespace Forma1WebApp.ViewModels;
 
 public class ErrorViewModel
 {

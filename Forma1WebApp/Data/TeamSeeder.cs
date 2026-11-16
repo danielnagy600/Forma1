@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Forma1WebApp.Data.Entities;
+using Microsoft.AspNetCore.Identity;
 
-namespace Forma1WebApp.Data.Entities;
+namespace Forma1WebApp.Data;
 
 public class TeamSeeder
 {

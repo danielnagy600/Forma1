@@ -1,4 +1,4 @@
-﻿@model Forma1WebApp.Data.Entities.Team
+@model TeamViewModel
 
 @{
     ViewData["Title"] = "Törlés";
@@ -36,7 +36,8 @@
     </dl>
 
 
-    <form asp-action="Delete">
+    <form asp-action="Delete" asp-route-id="@Model.Id">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="submit" value="Törlés" class="btn btn-secondary" /> |
         <a asp-action="EditableList">Vissza a listához</a>
     </form>

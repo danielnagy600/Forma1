@@ -1,5 +1,5 @@
 ﻿using Forma1WebApp.Data.Entities;
-using Forma1WebApp.ViewModel;
+using Forma1WebApp.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,6 +24,7 @@ public class AccountController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login(LoginViewModel model)
     {
         if (ModelState.IsValid)
