@@ -7,22 +7,22 @@ public class TeamViewModel
 {
     public int Id { get; set; }
 
-    [Required(ErrorMessage = "A sor kitöltése kötelező!")]
-    [StringLength(15, ErrorMessage = "Maximum {1} karakteres név adható meg.")]
-    [Display(Name = "Csapatnév")]
+    [Required(ErrorMessage = "This field is required!")]
+    [StringLength(15, ErrorMessage = "The name can be at most {1} characters long.")]
+    [Display(Name = "Team name")]
     public string Name { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "A sor kitöltése kötelező!")]
-    [Display(Name = "Alapítás éve")]
-    [Range(1950, 2020, ErrorMessage = "A megadott értéknek {1} és {2} között kell lennie.")]
+    [Required(ErrorMessage = "This field is required!")]
+    [Display(Name = "Year of foundation")]
+    [Range(1950, 2020, ErrorMessage = "The value must be between {1} and {2}.")]
     public int YearOfFoundation { get; set; }
 
-    [Required(ErrorMessage = "A sor kitöltése kötelező!")]
-    [Display(Name = "Megnyert világbajnokságok száma")]
-    [Range(0, 50, ErrorMessage = "Az értéknek {1} és {2} között kell lennie.")]
+    [Required(ErrorMessage = "This field is required!")]
+    [Display(Name = "Championships won")]
+    [Range(0, 50, ErrorMessage = "The value must be between {1} and {2}.")]
     public int WonOfChampionship { get; set; }
 
-    [Display(Name = "Nevezési díj megléte")]
+    [Display(Name = "Entry fee paid")]
     public bool IsPaid { get; set; }
 
     public static TeamViewModel FromEntity(Team team) => new()
@@ -35,7 +35,7 @@ public class TeamViewModel
     };
 
     /// <summary>
-    /// A szerkeszthető mezőket másolja az entitásba; az azonosítót szándékosan nem.
+    /// Copies the editable fields to the entity; the identifier is intentionally not copied.
     /// </summary>
     public void ApplyTo(Team team)
     {

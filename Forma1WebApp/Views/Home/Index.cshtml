@@ -1,0 +1,31 @@
+@model IEnumerable<TeamViewModel>
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="text-center">
+    <p class="h1">Formula 1</p>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Name)</th>
+            <th class="text-center">@Html.DisplayNameFor(model => model.YearOfFoundation)</th>
+            <th class="text-center">@Html.DisplayNameFor(model => model.WonOfChampionship)</th>
+            <th class="text-center">@Html.DisplayNameFor(model => model.IsPaid)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                <td class="text-center">@Html.DisplayFor(modelItem => item.YearOfFoundation)</td>
+                <td class="text-center">@Html.DisplayFor(modelItem => item.WonOfChampionship)</td>
+                <td class="text-center">@Html.DisplayFor(modelItem => item.IsPaid)</td>
+            </tr>
+        }
+    </tbody>
+</table>

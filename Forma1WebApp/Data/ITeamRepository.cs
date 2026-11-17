@@ -4,10 +4,9 @@ namespace Forma1WebApp.Data;
 
 public interface ITeamRepository
 {
-    IEnumerable<Team> GetAllTeam();
-    void AddTeam(Team team);
-    bool SaveAll();
-    void Update(Team team);
-    Team? GetElementById(int Id);
-    void DeleteTeam(Team team);
+    Task<List<Team>> GetAllAsync();
+    Task<Team?> GetByIdAsync(int id);
+    void Add(Team team);
+    void Remove(Team team);
+    Task SaveChangesAsync();
 }

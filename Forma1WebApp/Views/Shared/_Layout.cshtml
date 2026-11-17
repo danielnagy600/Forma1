@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
+    <title>@ViewData["Title"] - Formula 1</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
     <header>
@@ -19,21 +19,23 @@
                     <div class="navbar-collapse collapse" id="mainNavbar">
                         <ul class="navbar-nav flex-grow-1">
                             <li class="nav-item">
-                                <a class="nav-link text-white" asp-area="" asp-controller="App" asp-action="Index">Főoldal</a>
+                                <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-white" asp-area="" asp-controller="App" asp-action="EditableList">Csapatok szerkesztése</a>
+                                <a class="nav-link text-white" asp-area="" asp-controller="Teams" asp-action="Index">Manage teams</a>
                             </li>
                             @if (User.Identity?.IsAuthenticated == true)
                             {
                                 <li class="nav-item ms-auto">
-                                    <a class="nav-link text-white" asp-area="" asp-controller="Account" asp-action="Logout">Kijelentkezés</a>
+                                    <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                        <button type="submit" class="nav-link btn btn-link text-white">Log out</button>
+                                    </form>
                                 </li>
                             }
                             else
                             {
                                 <li class="nav-item ms-auto">
-                                    <a class="nav-link text-white" asp-area="" asp-controller="Account" asp-action="Login">Bejelentkezés</a>
+                                    <a class="nav-link text-white" asp-area="" asp-controller="Account" asp-action="Login">Log in</a>
                                 </li>
                             }
                         </ul>
@@ -49,7 +51,7 @@
     </div>
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2020 - Felvételi feladat 
+            &copy; @DateTime.Now.Year - Recruitment assignment
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

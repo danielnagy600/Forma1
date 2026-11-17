@@ -1,5 +1,6 @@
 ﻿using Forma1WebApp.Data.Entities;
 using Forma1WebApp.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,37 +15,60 @@ public class AccountController : Controller
         this.signInManager = signInManager;
     }
 
-    public IActionResult Login()
+    // GET: /Account/Login
+    public IActionResult Login(string? returnUrl = null)
     {
         if (User.Identity?.IsAuthenticated == true)
         {
-            return RedirectToAction("EditableList", "App");
+            return RedirectToLocal(returnUrl);
         }
-        return View();
+
+        ViewData["ReturnUrl"] = returnUrl;
+        return View(new LoginViewModel());
     }
 
+    // POST: /Account/Login
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Login(LoginViewModel model)
+    public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
     {
-        if (ModelState.IsValid)
+        ViewData["ReturnUrl"] = returnUrl;
+
+        if (!ModelState.IsValid)
         {
-            var result = await signInManager.PasswordSignInAsync(model.Username,
-                                                                 model.Password,
-                                                                 false,
-                                                                 false);
-            if (result.Succeeded)
-            {
-                return RedirectToAction("EditableList", "App");
-            }
+            return View(model);
         }
-        ModelState.AddModelError("", "Sikertelen bejelentkezés");
-        return View();
+
+        var result = await signInManager.PasswordSignInAsync(model.Username,
+                                                             model.Password,
+                                                             isPersistent: false,
+                                                             lockoutOnFailure: false);
+        if (result.Succeeded)
+        {
+            return RedirectToLocal(returnUrl);
+        }
+
+        ModelState.AddModelError(string.Empty, "Invalid username or password.");
+        return View(model);
     }
 
-    public async Task<ActionResult> Logout()
+    // POST: /Account/Logout
+    [HttpPost]
+    [Authorize]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Logout()
     {
         await signInManager.SignOutAsync();
-        return RedirectToAction("Index", "App");
+        return RedirectToAction(nameof(HomeController.Index), "Home");
+    }
+
+    private IActionResult RedirectToLocal(string? returnUrl)
+    {
+        if (Url.IsLocalUrl(returnUrl))
+        {
+            return LocalRedirect(returnUrl);
+        }
+
+        return RedirectToAction(nameof(TeamsController.Index), "Teams");
     }
 }

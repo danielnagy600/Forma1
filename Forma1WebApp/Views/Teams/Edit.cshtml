@@ -1,0 +1,26 @@
+@model TeamViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit team</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" asp-route-id="@Model.Id" method="post">
+            <partial name="_TeamForm" model="Model" />
+            <div class="mb-3">
+                <input type="submit" value="Save" class="btn btn-secondary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to list</a>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

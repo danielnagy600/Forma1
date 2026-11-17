@@ -9,6 +9,6 @@ public class Forma1Context : IdentityDbContext<StoreUser>
     public Forma1Context(DbContextOptions<Forma1Context> options)
         : base(options) { }
 
-    public DbSet<Team> Teams { get; set; }
-    public DbSet<StoreUser> StoreUsers { get; set; }
+    // Users are managed by IdentityDbContext through the Users set.
+    public DbSet<Team> Teams => Set<Team>();
 }

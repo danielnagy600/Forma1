@@ -1,4 +1,5 @@
 ﻿using Forma1WebApp.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Forma1WebApp.Data;
 
@@ -11,33 +12,31 @@ public class TeamRepository : ITeamRepository
         _ctx = ctx;
     }
 
-    public IEnumerable<Team> GetAllTeam()
+    public Task<List<Team>> GetAllAsync()
     {
-        return _ctx.Teams.ToList();
+        return _ctx.Teams
+            .AsNoTracking()
+            .OrderBy(t => t.Id)
+            .ToListAsync();
     }
 
-    public Team? GetElementById(int Id)
+    public async Task<Team?> GetByIdAsync(int id)
     {
-        return _ctx.Teams.FirstOrDefault(x => x.Id == Id);
+        return await _ctx.Teams.FindAsync(id);
     }
 
-    public void AddTeam(Team team)
+    public void Add(Team team)
     {
         _ctx.Teams.Add(team);
     }
 
-    public void DeleteTeam(Team team)
+    public void Remove(Team team)
     {
         _ctx.Teams.Remove(team);
     }
 
-    public void Update(Team team)
+    public Task SaveChangesAsync()
     {
-        _ctx.Teams.Update(team);
-    }
-
-    public bool SaveAll()
-    {
-        return _ctx.SaveChanges() > 0;
+        return _ctx.SaveChangesAsync();
     }
 }
